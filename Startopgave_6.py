@@ -9,58 +9,66 @@
 # Ga je runnen met het echte bestand, geef je programma dan even de tijd.
 
 def main():
+
+
     bestand = "alpaca.fa" # Voer hier de bestandsnaam van het juiste bestand in, of hernoem je bestand
     """
     Hier onder vind je de aanroep van de lees_inhoud functie, die gebruikt maakt van de bestand variabele als argument.
     De resultaten van de functie, de lijst met headers en de lijst met sequenties, sla je op deze manier op in twee losse resultaten.
     """
-    header, seqs = lees_inhoud(bestand) 
-        
-    zoekwoord = input("Geef een zoekwoord op: ")
-
+    try:
+        header, seqs = lees_inhoud(bestand) 
     
-    lijstZoekwoord = [i for i, s in enumerate(header) if zoekwoord in s]
-    #index = int(lijstZoekwoord[len()])
-    index = 0
-    i = 0
-    #print(len(lijstZoekwoord))
-    for items in lijstZoekwoord:
-        print(80 * '-')
-        index = int(lijstZoekwoord[i])
-        isDNA = is_dna(seqs,index)
-        print("dit is de header die bij de sequentie hoort: ")
-        print(header[index])
-        knipt(seqs,index,zoekwoord)
-        if isDNA == True:
-            print("De sequentie is DNA")
-        else:
-            print("De sequentie is geen DNA of er zitten andere tekens tussen dan ATGC")
+        zoekwoord = input("Geef een zoekwoord op: ")
+
+        
+        lijstZoekwoord = [i for i, s in enumerate(header) if zoekwoord in s]
+        #index = int(lijstZoekwoord[len()])
+        index = 0
+        i = 0
+        #print(len(lijstZoekwoord))
+        for items in lijstZoekwoord:
+            print(80 * '-')
+            index = int(lijstZoekwoord[i])
+            isDNA = is_dna(seqs,index)
+            print("dit is de header die bij de sequentie hoort: ")
+            print(header[index])
+            knipt(seqs,index,zoekwoord)
+            if isDNA == True:
+                print("De sequentie is DNA")
+            else:
+                print("De sequentie is geen DNA of er zitten andere tekens tussen dan ATGC")
 
 
-        i+=1
-    # schrijf hier de rest van de code nodig om de aanroepen te doen
+            i+=1
+    except UnboundLocalError:
+        print("Fout met variabelen en of bestand is niet aanwezig") 
+        # schrijf hier de rest van de code nodig om de aanroepen te doen
     
     
 def lees_inhoud(bestands_naam):
-    bestand = open(bestands_naam)
-    seqs = []
-    header = []
-    seq = ''
-    for line in bestand:
-        #print(line)
-        if line.startswith('>'):
-            line = line.replace('\n', '')
-            header.append(line)
-            if seqs != '':
-                seqs.append(seq)
-                seq = ''
-        else:
-            line = line.replace('\n', '')
-            seq += line
-            
-    seqs.append(seq)
-    seqs.remove('')
-
+    try:
+        bestand = open(bestands_naam)
+        seqs = []
+        header = []
+        seq = ''
+        for line in bestand:  
+            #print(line)
+            if line.startswith('>'):
+                line = line.replace('\n', '')
+                header.append(line)
+                if seqs != '':
+                    seqs.append(seq)
+                    seq = ''
+            else:
+                line = line.replace('\n', '')
+                seq += line
+                
+        seqs.append(seq)
+        seqs.remove('')
+    except FileNotFoundError:
+        print("Dit bestand bestaat niet in deze map")
+    
     """
     Schrijf hier je eigen code die het bestand inleest en deze splitst in headers en sequenties.
     Lever twee lijsten op:
