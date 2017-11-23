@@ -11,7 +11,7 @@
 def main():
 
 
-    bestand = "alpacaaa.fa" # Voer hier de bestandsnaam van het juiste bestand in, of hernoem je bestand
+    bestand = "alpacaaa" # Voer hier de bestandsnaam van het juiste bestand in, of hernoem je bestand
     """
     Hier onder vind je de aanroep van de lees_inhoud functie, die gebruikt maakt van de bestand variabele als argument.
     De resultaten van de functie, de lijst met headers en de lijst met sequenties, sla je op deze manier op in twee losse resultaten.
@@ -34,6 +34,8 @@ def main():
             print("dit is de header die bij de sequentie hoort: ")
             print(header[index])
             knipt(seqs,index,zoekwoord)
+            if type(isDNA) != bool:
+                raise TypeError
             if isDNA == True:
                 print("De sequentie is DNA")
             else:
@@ -54,6 +56,8 @@ def main():
 def lees_inhoud(bestands_naam):
     try:
         bestand = open(bestands_naam)
+        if ".fasta" not in bestand or ".fa" not in bestand:
+            raise IOError
         seqs = []
         header = []
         seq = ''
@@ -72,7 +76,7 @@ def lees_inhoud(bestands_naam):
         seqs.append(seq)
         seqs.remove('')
     except IOError:
-        print("Bestand is niet aanwezig")
+        print("Dit bestand is geen faste bestand")
     except FileNotFoundError:
         print("Dit bestand bestaat niet in deze map")
     
